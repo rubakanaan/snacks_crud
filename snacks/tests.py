@@ -46,23 +46,22 @@ class SnackTests(TestCase):
             reverse('snack_create'),
          {
             "title" : "chips",
-            "purchaser" : self.user,
+            "purchaser" : self.user.id,
             "description" :"anything about chips. "                           
           },
          follow=True
          )
-        # self.assertRedirects(response,reverse('snack_detail',args='2'))
-        self.assertContains(response, "Add New Snack")
-        self.assertTemplateUsed(response,'snack_create.html')
+        self.assertRedirects(response,reverse('snack_detail',args='2'))
+        
         
 
-    # def test_snack_update_view_redirect(self):
-    #     response = self.client.post(
-    #         reverse("snack_update", args="1"),
-    #         {"title": "pepsi","purchaser":self.user,"description":"anythin"}
-    #     )
+    def test_snack_update_view_redirect(self):
+        response = self.client.post(
+            reverse("snack_update", args="1"),
+            {"title": "pepsi","purchaser":self.user.id,"description":"anythin"}
+        )
 
-    #     self.assertRedirects(response, reverse("snack_list"))
+        self.assertRedirects(response, reverse('snack_detail',args='1'))
 
     def test_thing_delete_view(self):
         response = self.client.get(reverse("snack_delete", args="1"))
